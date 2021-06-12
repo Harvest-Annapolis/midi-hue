@@ -6,14 +6,16 @@ from hue_api import HueApi
 def join_the_hue():
     api = HueApi()
     api.create_new_user("10.1.0.99")
+    api.save_api_key("the_hue_is_due.dat")
 
 def do_the_hue():
     api = HueApi()
-    api.load_existing()
+    api.load_existing("the_hue_is_due.dat")
     api.fetch_lights()
-    dir(api)
-    api.list_lights()
-    print(api.lights)
+    api.fetch_groups()
+    [i.set_off() for i in api.groups[0].lights]
+    time.sleep(5)
+    [i.set_on() for i in api.groups[0].lights]
 
 def callback(message, time):
     print(message)
