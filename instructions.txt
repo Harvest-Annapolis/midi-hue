@@ -1,5 +1,9 @@
 # MIDI_NOTE:LIGHT_GROUP:BRIGHTNESS
-77:Sanctuary:100
-77:Production:100
-76:Santuary:50
-75:Sanctuary:25
+77:Sanctuary:255
+77:Production Booth:255
+76:Sanctuary:128
+76:Production Booth:128
+75:Sanctuary:64
+75:Production Booth:64
+74:Sanctuary:0
+74:Production Booth:0
