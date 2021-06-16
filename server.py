@@ -16,7 +16,7 @@ def do_the_hue(api):
     #time.sleep(5)
     #[i.set_on() for i in api.groups[0].lights]
 
-def run_instruction(instructions):
+def run_instructions(instructions):
     for i in instructions:
         group_name = i[1]
         brightness = i[2]
