@@ -43,6 +43,10 @@ if __name__ == "__main__":
     print(midi_in.get_ports())
     midi_in.open_port(0,name="Light Hub")
 
+    with open("./instructions.txt", "r") as f:
+        instructions = f.read()
+        print("{}\n".format(instructions))
+            
     print("Entering main loop. Press Control-C to exit.")
     try:
         # Just wait for keyboard interrupt,
