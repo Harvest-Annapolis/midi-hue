@@ -23,7 +23,7 @@ def run_instruction(instructions):
     for i in instructions:
         group_name = i[1]
         brightness = i[2]
-        if brightness = 0:
+        if brightness == 0:
             [i.set_off() for i in api.groups[0].lights]
         else:
             [i.set_brightness(brightness) for i in api.groups[0].lights]
