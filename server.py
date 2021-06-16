@@ -3,9 +3,6 @@ import time
 import rtmidi
 from hue_api import HueApi
 
-api = HueApi()
-do_the_hue(api)
-
 def join_the_hue():
     api = HueApi()
     api.create_new_user("10.1.0.99")
@@ -36,6 +33,9 @@ def callback(message, time):
             instructions = [i.split(":") for i in f.readlines() if i[0] != '#']
         if len([i for i in instructions if i[0] == message[1]]) > 0:
             run_instructions([i for i in instructions if i[0] == str(message[1])])
+
+api = HueApi()
+do_the_hue(api)
 
 if __name__ == "__main__":
     midi_in = rtmidi.MidiIn()
