@@ -2,6 +2,8 @@
 import time
 import rtmidi
 from hue_api import HueApi
+import win32api
+from win32con import VK_MEDIA_PLAY_PAUSE, KEYEVENTF_EXTENDEDKEY
 
 def join_the_hue():
     api = HueApi()
@@ -13,25 +15,37 @@ def do_the_hue(api):
     api.fetch_lights()
     api.fetch_groups()
 
+def light_instruction(group_name, brightness):
+    my_group = [j for j in api.groups if j.name == group_name][0]
+    if brightness == 0:
+        [j.set_off() for j in my_group.lights]
+    else:
+        [j.set_on() for j in my_group.lights]
+        [j.set_brightness(brightness) for j in my_group.lights]
+
 def run_instructions(instructions):
     global api
     for i in instructions:
-        group_name = i[1]
-        brightness = int(i[2].strip())
-        my_group = [j for j in api.groups if j.name == group_name][0]
-        if brightness == 0:
-            [j.set_off() for j in my_group.lights]
+        if i["instruction_type"] == "light":
+            light_instruction(i["args"][0], int(i["args"][1].strip()))
+        elif i["instruction_type"] == "media":
+            media_cues(i["args"][0])
         else:
-            [j.set_on() for j in my_group.lights]
-            [j.set_brightness(brightness) for j in my_group.lights]
+            print("Invalid Instruction Type!!!")
+        
+def media_cues(cue):
+    if cue == "toggle":
+        win32api.keybd_event(VK_MEDIA_PLAY_PAUSE, 0, KEYEVENTF_EXTENDEDKEY, 0)
+
 
 def callback(data, question_mark):
     message = data[0]
     if message[2] != 0:
         with open("./instructions.txt", "r") as f:
-            instructions = [i.split(":") for i in f.readlines() if i[0] != '#']
-        if len([i for i in instructions if i[0] == str(message[1])]) > 0:
-            run_instructions([i for i in instructions if i[0] == str(message[1])])
+            instructions = [i.split(":") for i in f.readlines() if i[0] != '#' and i.strip() != ""]
+            instructions = [{"midi_note":i[0], "instruction_type":i[1], "args":i[2:]} for i in instructions]
+        if len([i for i in instructions if i["midi_note"] == str(message[1])]) > 0:
+            run_instructions([i for i in instructions if i["midi_note"] == str(message[1])])
 
 api = HueApi()
 do_the_hue(api)

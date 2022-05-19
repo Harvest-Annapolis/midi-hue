@@ -1,11 +1,20 @@
-# MIDI_NOTE:LIGHT_GROUP:BRIGHTNESS
-77:Sanctuary:255
-77:Production Booth:128
-76:Sanctuary:186
-76:Production Booth:64
-75:Sanctuary:128
-75:Production Booth:0
-74:Sanctuary:64
-74:Production Booth:0
-73:Sanctuary:0
-73:Production Booth:0
+# MIDI_NOTE:INSTRUCTION_TYPE:LIGHT_GROUP:BRIGHTNESS
+78:light:Sanctuary:255
+78:light:Production Booth:255
+77:light:Sanctuary:255
+77:light:Production Booth:128
+77:light:Stage:76
+76:light:Sanctuary:186
+76:light:Production Booth:64
+76:light:Stage:76
+75:light:Sanctuary:128
+75:light:Production Booth:0
+75:light:Stage:76
+74:light:Sanctuary:64
+74:light:Production Booth:0
+74:light:Stage:76
+73:light:Sanctuary:0
+73:light:Production Booth:0
+
+# MIDI_NOTE:INSTRUCTION_TYPE:MEDIA_EFFECT
+61:media:toggle
