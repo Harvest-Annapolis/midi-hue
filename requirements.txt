@@ -1,3 +1,4 @@
 python-rtmidi
 hue-py
 pywin32
+pysimplegui
