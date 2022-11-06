@@ -1,1 +1,2 @@
-python3 server.py
+start pythonw3 gui.py
+exit
