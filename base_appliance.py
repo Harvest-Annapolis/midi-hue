@@ -37,24 +37,35 @@ def media_cues(cue):
     if cue == "toggle":
         win32api.keybd_event(VK_MEDIA_PLAY_PAUSE, 0, KEYEVENTF_EXTENDEDKEY, 0)
 
-
+def get_instructions():
+    with open("./instructions.txt", "r") as f:
+        instructions = [i.split(":") for i in f.readlines() if i[0] != '#' and i.strip() != ""]
+        instructions = [{"midi_note":i[0], "instruction_type":i[1], "args":i[2:]} for i in instructions]
+    return instructions
+ 
 def callback(data, question_mark):
     message = data[0]
     if message[2] != 0:
-        with open("./instructions.txt", "r") as f:
-            instructions = [i.split(":") for i in f.readlines() if i[0] != '#' and i.strip() != ""]
-            instructions = [{"midi_note":i[0], "instruction_type":i[1], "args":i[2:]} for i in instructions]
+        instructions = get_instructions()
         if len([i for i in instructions if i["midi_note"] == str(message[1])]) > 0:
             run_instructions([i for i in instructions if i["midi_note"] == str(message[1])])
 
-api = HueApi()
-do_the_hue(api)
-
-if __name__ == "__main__":
+def init():
     midi_in = rtmidi.MidiIn()
     midi_in.set_callback(callback)
     print(midi_in.get_ports())
     midi_in.open_port(1,name="Light Hub")
+    return midi_in
+
+def cleanup(midi_in):
+    midi_in.close_port()
+    del midi_in
+
+if __name__ == "__main__":
+    api = HueApi()
+    do_the_hue(api)
+    
+    midi_in = init()
 
     with open("./instructions.txt", "r") as f:
         instructions = f.read()
@@ -71,5 +82,4 @@ if __name__ == "__main__":
         print('')
     finally:
         print("Exit.")
-        midi_in.close_port()
-        del midi_in
+        cleanup(midi_in)
