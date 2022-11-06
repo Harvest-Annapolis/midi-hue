@@ -5,6 +5,8 @@ from hue_api import HueApi
 import win32api
 from win32con import VK_MEDIA_PLAY_PAUSE, KEYEVENTF_EXTENDEDKEY
 
+_internal_api = None
+
 def join_the_hue():
     api = HueApi()
     api.create_new_user("10.1.0.99")
@@ -16,7 +18,7 @@ def do_the_hue(api):
     api.fetch_groups()
 
 def light_instruction(group_name, brightness):
-    my_group = [j for j in api.groups if j.name == group_name][0]
+    my_group = [j for j in _internal_api.groups if j.name == group_name][0]
     if brightness == 0:
         [j.set_off() for j in my_group.lights]
     else:
@@ -24,7 +26,7 @@ def light_instruction(group_name, brightness):
         [j.set_brightness(brightness) for j in my_group.lights]
 
 def run_instructions(instructions):
-    global api
+    global _internal_api
     for i in instructions:
         if i["instruction_type"] == "light":
             light_instruction(i["args"][0], int(i["args"][1].strip()))
@@ -50,8 +52,10 @@ def callback(data, question_mark):
         if len([i for i in instructions if i["midi_note"] == str(message[1])]) > 0:
             run_instructions([i for i in instructions if i["midi_note"] == str(message[1])])
 
-def init():
+def init(api):
+    global _internal_api
     midi_in = rtmidi.MidiIn()
+    _internal_api = api
     midi_in.set_callback(callback)
     print(midi_in.get_ports())
     midi_in.open_port(1,name="Light Hub")
@@ -65,7 +69,7 @@ if __name__ == "__main__":
     api = HueApi()
     do_the_hue(api)
     
-    midi_in = init()
+    midi_in = init(api)
 
     with open("./instructions.txt", "r") as f:
         instructions = f.read()

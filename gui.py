@@ -39,8 +39,13 @@ def generate_button_map(row_width):
     print(rows)
     return rows
 
-if __name__ == "__main__":    
+if __name__ == "__main__":   
+    api = base_appliance.HueApi()
+    base_appliance.do_the_hue(api)
+    
     layout = generate_button_map(4)
+    
+    midi_in = base_appliance.init(api)
     
     # Create the window
     window = sg.Window(
@@ -56,8 +61,10 @@ if __name__ == "__main__":
         # End program if user closes window or
         # presses the OK button
         if type(event) is tuple and"button" == event[0]:
-            print(event[1])
+            #print(event[1])
+            base_appliance.callback(([144,event[1],127], 0), "wat")
         if event == sg.WIN_CLOSED:
+            base_appliance.cleanup(midi_in)
             break
     
     window.close()
