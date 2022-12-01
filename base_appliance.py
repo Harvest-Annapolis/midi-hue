@@ -29,9 +29,9 @@ def run_instructions(instructions):
     global _internal_api
     for i in instructions:
         if i["instruction_type"] == "light":
-            light_instruction(i["args"][0], int(i["args"][1].strip()))
+            light_instruction(i["args"][0].strip(), int(i["args"][1].strip()))
         elif i["instruction_type"] == "media":
-            media_cues(i["args"][0])
+            media_cues(i["args"][0].strip())
         else:
             print("Invalid Instruction Type!!!")
         
