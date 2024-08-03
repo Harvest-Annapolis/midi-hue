@@ -47,5 +47,8 @@
 61:media:toggle
 
 # MIDI_NOTE:INSTRUCTION_TYPE:CAMERA_PRESET
-62:camera:1
-63:camera:2
+62:camera:preset:1
+62:camera:autotrack:on
+63:camera:preset:2
+63:camera:autotrack:off
+

@@ -34,7 +34,7 @@ def run_instructions(instructions):
         elif i["instruction_type"] == "media":
             media_cues(i["args"][0].strip())
         elif i["instruction_type"] == "camera":
-            camera_presets(i["args"][0].strip())
+            camera_presets(i["args"][0].strip(), i["args"][1].strip())
         else:
             print("Invalid Instruction Type!!!")
         
@@ -42,8 +42,14 @@ def media_cues(cue):
     if cue == "toggle":
         win32api.keybd_event(VK_MEDIA_PLAY_PAUSE, 0, KEYEVENTF_EXTENDEDKEY, 0)
 
-def camera_presets(preset_number):
-    requests.post("http://10.2.0.93/cgi-bin/ptzctrl.cgi?post_preset", data="poscallwithspeed={}&panspeed=10&tiltspeed=10&zoomspeed=5".format(preset_number))
+def camera_presets(instruction, value):
+    if instruction == "preset":
+        requests.post("http://10.2.0.93/cgi-bin/ptzctrl.cgi?post_preset", data="poscallwithspeed={}&panspeed=10&tiltspeed=10&zoomspeed=5".format(value))
+    if instruction == "autotrack":
+        onoff = 2 if value.lower() == "on" else 3
+        requests.get("http://10.2.0.93/cgi-bin/ptzctrl.cgi?post_image_value&autotrack&{}".format(onoff), data="")
+        
+        
 
 def get_instructions():
     with open("./instructions.txt", "r") as f:

@@ -23,7 +23,12 @@ def format_instruction_string(instructions):
             else:
                 output += "Unknown Media Command"
         elif instruction["instruction_type"] == "camera":
-            output += "Camera Preset: {}".format(instruction["args"][0])
+            if instruction["args"][0] == "preset":
+                output += "Camera Preset: {}".format(instruction["args"][1])
+            elif instruction["args"][0] == "autotrack":
+                output += "Camera Auto-Track: {}".format(instruction["args"][1])
+            else:
+                output += "Unknown Camera Command"
     return output
 
 def generate_button_map(row_width):
