@@ -1,23 +1,51 @@
+#Eyballs Off
+81:light:Stage:0
+
+# Good Friday
+81:light:Sanctuary:186
+81:light:Production Booth:64
+81:light:Stage:0
+
 # MIDI_NOTE:INSTRUCTION_TYPE:LIGHT_GROUP:BRIGHTNESS
+80:light:Sanctuary:25
+80:light:Production Booth:25
+
+# Bright Test
 79:light:Sanctuary:255
 79:light:Production Booth:255
+
+# Comfey
 78:light:Sanctuary:186
 78:light:Production Booth:64
 78:light:Stage:0
+
+# Who knows
 77:light:Sanctuary:255
 77:light:Production Booth:128
 77:light:Stage:76
-76:light:Sanctuary:186
+
+# Message
+76:light:Sanctuary:255
 76:light:Production Booth:64
-76:light:Stage:76
+76:light:Stage:64
+
+# 
 75:light:Sanctuary:128
 75:light:Production Booth:0
 75:light:Stage:76
-74:light:Sanctuary:64
-74:light:Production Booth:0
-74:light:Stage:76
+
+# Worship
+74:light:Sanctuary:200
+74:light:Production Booth:64
+74:light:Stage:64
+74:light:Foyer:230
+
 73:light:Sanctuary:0
 73:light:Production Booth:0
 
 # MIDI_NOTE:INSTRUCTION_TYPE:MEDIA_EFFECT
 61:media:toggle
+
+# MIDI_NOTE:INSTRUCTION_TYPE:CAMERA_PRESET
+62:camera:1
+63:camera:2

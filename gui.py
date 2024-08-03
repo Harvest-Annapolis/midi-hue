@@ -22,6 +22,8 @@ def format_instruction_string(instructions):
                 output += "Media: Play/Pause Audio"
             else:
                 output += "Unknown Media Command"
+        elif instruction["instruction_type"] == "camera":
+            output += "Camera Preset: {}".format(instruction["args"][0])
     return output
 
 def generate_button_map(row_width):

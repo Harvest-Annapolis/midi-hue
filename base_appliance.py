@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import time
 import rtmidi
+import requests
 from hue_api import HueApi
 import win32api
 from win32con import VK_MEDIA_PLAY_PAUSE, KEYEVENTF_EXTENDEDKEY
@@ -32,12 +33,17 @@ def run_instructions(instructions):
             light_instruction(i["args"][0].strip(), int(i["args"][1].strip()))
         elif i["instruction_type"] == "media":
             media_cues(i["args"][0].strip())
+        elif i["instruction_type"] == "camera":
+            camera_presets(i["args"][0].strip())
         else:
             print("Invalid Instruction Type!!!")
         
 def media_cues(cue):
     if cue == "toggle":
         win32api.keybd_event(VK_MEDIA_PLAY_PAUSE, 0, KEYEVENTF_EXTENDEDKEY, 0)
+
+def camera_presets(preset_number):
+    requests.post("http://10.2.0.93/cgi-bin/ptzctrl.cgi?post_preset", data="poscallwithspeed={}&panspeed=10&tiltspeed=10&zoomspeed=5".format(preset_number))
 
 def get_instructions():
     with open("./instructions.txt", "r") as f:
