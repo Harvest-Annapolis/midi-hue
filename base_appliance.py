@@ -43,11 +43,11 @@ def media_cues(cue):
         win32api.keybd_event(VK_MEDIA_PLAY_PAUSE, 0, KEYEVENTF_EXTENDEDKEY, 0)
 
 def camera_presets(instruction, value):
-    if instruction == "preset":
-        requests.post("http://10.2.0.93/cgi-bin/ptzctrl.cgi?post_preset", data="poscallwithspeed={}&panspeed=10&tiltspeed=10&zoomspeed=5".format(value))
     if instruction == "autotrack":
         onoff = 2 if value.lower() == "on" else 3
         requests.get("http://10.2.0.93/cgi-bin/ptzctrl.cgi?post_image_value&autotrack&{}".format(onoff), data="")
+    if instruction == "preset":
+        requests.post("http://10.2.0.93/cgi-bin/ptzctrl.cgi?post_preset", data="poscallwithspeed={}&panspeed=10&tiltspeed=10&zoomspeed=5".format(value))
         
         
 

@@ -51,4 +51,6 @@
 62:camera:autotrack:on
 63:camera:preset:2
 63:camera:autotrack:off
+64:camera:preset:3
+64:camera:autotrack:off
 
