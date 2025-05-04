@@ -48,9 +48,13 @@
 
 # MIDI_NOTE:INSTRUCTION_TYPE:CAMERA_PRESET
 62:camera:preset:1
-62:camera:autotrack:on
+#62:camera:autotrack:on
 63:camera:preset:2
 63:camera:autotrack:off
 64:camera:preset:3
 64:camera:autotrack:off
+65:camera:preset:4
+65:camera:autotrack:off
+66:camera:preset:5
+66:camera:autotrack:off
 
