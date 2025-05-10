@@ -78,39 +78,39 @@ sanctuary = 0
 description = "Spotify Toggle"
 midi= 61
 [[instruction.misc]]
-media = toggle
+media = "toggle"
 
 [[instructions]]
 description = "Camera 1"
 midi = 62
 [[instruction.camera]]
-#autotrack = on
+#autotrack = true
 preset = 1
 
 [[instructions]]
 description = "Camera 2"
 midi = 63
 [[instruction.camera]]
-autotrack = off
+autotrack = false
 preset = 2
 
 [[instructions]]
 description = "Camera 3"
 midi = 64
 [[instruction.camera]]
-autotrack = off
+autotrack = false
 preset = 3
 
 [[instructions]]
 description = "Camera 4"
 midi = 65
 [[instruction.camera]]
-autotrack = off
+autotrack = false
 preset = 4
 
 [[instructions]]
 description = "Camera 5"
 midi = 66
 [[instruction.camera]]
-autotrack = off
+autotrack = false
 preset = 5
