@@ -1,0 +1,116 @@
+[[instruction]]
+description = "Eyeballs Off"
+midi = 82
+[[instruction.lights]]
+stage = 0
+
+[[instruction]]
+description = "Good Friday"
+midi = 81
+[[instruction.lights]]
+booth = 64
+sanctuary = 186
+stage = 0
+
+[[instruction]]
+description = "TBD"
+midi = 80
+[[instruction.lights]]
+booth = 25
+sanctuary = 25
+
+[[instruction]]
+description = "Bright Test"
+midi = 79
+[[instruction.lights]]
+booth = 255
+sanctuary = 255
+
+[[instructions]]
+description = "Comfy"
+midi = 78
+[[instruction.lights]]
+booth = 64
+sanctuary = 186
+stage = 0
+
+[[instructions]]
+description = "Who knows"
+midi = 77
+[[instruction.lights]]
+booth = 128
+sanctuary = 255
+stage = 76
+
+[[instructions]]
+description = "Message"
+midi = 76
+[[instruction.lights]]
+booth = 64
+sanctuary = 255
+stage = 64
+
+[[instructions]]
+description = "tbd"
+midi = 75
+[[instruction.lights]]
+booth = 0
+sanctuary = 128
+stage = 76
+
+[[instructions]]
+description = "Worship"
+midi = 74
+[[instruction.lights]]
+booth = 64
+foyer = 230
+sanctuary = 200
+stage = 64
+
+[[instructions]]
+description = "tbd"
+midi = 73
+[[instruction.lights]]
+booth = 0
+sanctuary = 0
+
+[[instructions]]
+description = "Spotify Toggle"
+midi= 61
+[[instruction.misc]]
+media = toggle
+
+[[instructions]]
+description = "Camera 1"
+midi = 62
+[[instruction.camera]]
+#autotrack = on
+preset = 1
+
+[[instructions]]
+description = "Camera 2"
+midi = 63
+[[instruction.camera]]
+autotrack = off
+preset = 2
+
+[[instructions]]
+description = "Camera 3"
+midi = 64
+[[instruction.camera]]
+autotrack = off
+preset = 3
+
+[[instructions]]
+description = "Camera 4"
+midi = 65
+[[instruction.camera]]
+autotrack = off
+preset = 4
+
+[[instructions]]
+description = "Camera 5"
+midi = 66
+[[instruction.camera]]
+autotrack = off
+preset = 5
