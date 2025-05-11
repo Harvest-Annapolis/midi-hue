@@ -1,78 +1,85 @@
+[hue_groups]
+booth = "Production Booth"
+foyer = "Foyer"
+sanctuary = "Sanctuary"
+stage = "Stage"
+
+
 [[instruction]]
 description = "Eyeballs Off"
 midi = 82
 [[instruction.lights]]
-stage = 0
+stage.brightness = 0
 
 [[instruction]]
 description = "Good Friday"
 midi = 81
 [[instruction.lights]]
-booth = 64
-sanctuary = 186
-stage = 0
+booth.brightness = 64
+sanctuary.brightness = 186
+stage.brightness = 0
 
 [[instruction]]
 description = "TBD"
 midi = 80
 [[instruction.lights]]
-booth = 25
-sanctuary = 25
+booth.brightness = 25
+sanctuary.brightness = 25
 
 [[instruction]]
 description = "Bright Test"
 midi = 79
 [[instruction.lights]]
-booth = 255
-sanctuary = 255
+booth.brightness = 255
+sanctuary.brightness = 255
 
 [[instructions]]
 description = "Comfy"
 midi = 78
 [[instruction.lights]]
-booth = 64
-sanctuary = 186
-stage = 0
+booth.brightness = 64
+sanctuary.brightness = 186
+stage.brightness = 0
 
 [[instructions]]
 description = "Who knows"
 midi = 77
 [[instruction.lights]]
-booth = 128
-sanctuary = 255
-stage = 76
+booth.brightness = 128
+sanctuary.brightness = 255
+stage.brightness = 76
 
 [[instructions]]
 description = "Message"
 midi = 76
 [[instruction.lights]]
-booth = 64
-sanctuary = 255
-stage = 64
+booth.brightness = 64
+sanctuary.brightness = 255
+stage.brightness = 64
 
 [[instructions]]
 description = "tbd"
 midi = 75
 [[instruction.lights]]
-booth = 0
-sanctuary = 128
-stage = 76
+booth.brightness = 0
+sanctuary.brightness = 128
+stage.brightness = 76
 
 [[instructions]]
 description = "Worship"
 midi = 74
 [[instruction.lights]]
-booth = 64
-foyer = 230
-sanctuary = 200
-stage = 64
+booth.brightness = 64
+foyer.brightness = 230
+sanctuary.brightness = 200
+stage.brightness = 64
 
 [[instructions]]
 description = "tbd"
 midi = 73
 [[instruction.lights]]
-booth = 0
-sanctuary = 0
+booth.brightness = 0
+sanctuary.brightness = 0
 
 [[instructions]]
 description = "Spotify Toggle"
