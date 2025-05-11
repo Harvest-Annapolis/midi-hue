@@ -1,0 +1,123 @@
+[hue_groups]
+booth = "Production Booth"
+foyer = "Foyer"
+sanctuary = "Sanctuary"
+stage = "Stage"
+
+
+[[instruction]]
+description = "Eyeballs Off"
+midi = 82
+[[instruction.lights]]
+stage.brightness = 0
+
+[[instruction]]
+description = "Good Friday"
+midi = 81
+[[instruction.lights]]
+booth.brightness = 64
+sanctuary.brightness = 186
+stage.brightness = 0
+
+[[instruction]]
+description = "TBD"
+midi = 80
+[[instruction.lights]]
+booth.brightness = 25
+sanctuary.brightness = 25
+
+[[instruction]]
+description = "Bright Test"
+midi = 79
+[[instruction.lights]]
+booth.brightness = 255
+sanctuary.brightness = 255
+
+[[instructions]]
+description = "Comfy"
+midi = 78
+[[instruction.lights]]
+booth.brightness = 64
+sanctuary.brightness = 186
+stage.brightness = 0
+
+[[instructions]]
+description = "Who knows"
+midi = 77
+[[instruction.lights]]
+booth.brightness = 128
+sanctuary.brightness = 255
+stage.brightness = 76
+
+[[instructions]]
+description = "Message"
+midi = 76
+[[instruction.lights]]
+booth.brightness = 64
+sanctuary.brightness = 255
+stage.brightness = 64
+
+[[instructions]]
+description = "tbd"
+midi = 75
+[[instruction.lights]]
+booth.brightness = 0
+sanctuary.brightness = 128
+stage.brightness = 76
+
+[[instructions]]
+description = "Worship"
+midi = 74
+[[instruction.lights]]
+booth.brightness = 64
+foyer.brightness = 230
+sanctuary.brightness = 200
+stage.brightness = 64
+
+[[instructions]]
+description = "tbd"
+midi = 73
+[[instruction.lights]]
+booth.brightness = 0
+sanctuary.brightness = 0
+
+[[instructions]]
+description = "Spotify Toggle"
+midi= 61
+[[instruction.misc]]
+media = "toggle"
+
+[[instructions]]
+description = "Camera 1"
+midi = 62
+[[instruction.camera]]
+#autotrack = true
+preset = 1
+
+[[instructions]]
+description = "Camera 2"
+midi = 63
+[[instruction.camera]]
+autotrack = false
+preset = 2
+
+[[instructions]]
+description = "Camera 3"
+midi = 64
+[[instruction.camera]]
+autotrack = false
+preset = 3
+
+[[instructions]]
+description = "Camera 4"
+midi = 65
+[[instruction.camera]]
+autotrack = false
+preset = 4
+
+[[instructions]]
+description = "Camera 5"
+midi = 66
+[[instruction.camera]]
+autotrack = false
+preset = 5
