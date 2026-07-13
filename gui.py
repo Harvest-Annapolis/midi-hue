@@ -1,48 +1,35 @@
 #!/usr/bin/env python3
 import base_appliance
 import PySimpleGUI as sg
+from instruction_classes import *
 
-def format_instruction_string(instructions):
-    output = "Midi Note: {} ({})\n\n".format(_midi_map[int(instructions[0]["midi_note"])] ,instructions[0]["midi_note"])
-    first = True
-    for instruction in instructions:
-        if not first:
-            output += "\n"
-        else:
-            first = False
-
-        if instruction["instruction_type"] == "light":
-            output +=  "Lights: {} ({}%)".format(
-                    instruction["args"][0],
-                    int((int(instruction["args"][1])/255)*100),
-                    instruction["midi_note"])
-        elif instruction["instruction_type"] == "media":
-            if instruction["args"][0] == "toggle":
-                output += "Media: Play/Pause Audio"
-            else:
-                output += "Unknown Media Command"
-        elif instruction["instruction_type"] == "camera":
-            if instruction["args"][0] == "preset":
-                output += "Camera Preset: {}".format(instruction["args"][1])
-            elif instruction["args"][0] == "autotrack":
-                output += "Camera Auto-Track: {}".format(instruction["args"][1])
-            else:
-                output += "Unknown Camera Command"
+def format_instruction_string(instruction: Instruction) -> str:
+    output = f"{instruction.description}\n\n"
+    output += f"Midi Note: {_midi_map[instruction.midi]} ({instruction.midi})\n\n"
+    output += instruction.action_strs()
     return output
 
 def generate_button_map(row_buttons: int):
-    rows=[]
+    rows = []
+    config = base_appliance.get_config()
+    button_config = config["gui"]["button_style"]
     instructions = base_appliance.get_instructions()
-    notes = sorted(list(set([i["midi_note"] for i in instructions])),reverse=True)
+
+    notes = sorted(list(instructions.keys()))
     for i in range(0, len(notes), row_buttons):
-        rows.append([
-            sg.Button(
-                format_instruction_string([k for k in instructions if k["midi_note"] == j]), 
-                font=("",10,"bold"), 
-                size=(30,8),
-                key=("button", j)) 
-            for j in notes[i:i+row_buttons]])
-    print(rows)
+        rows.append(
+            [sg.Button(
+                format_instruction_string(instructions[note]), 
+                font = (button_config["font_family"],
+                        button_config["font_size"],
+                        button_config["font_style"]), 
+                size = (button_config["button_width"],
+                        button_config["button_height"]),
+                key = ("button", note)
+            ) for note in notes[i:i + row_buttons]
+        ])
+    
+    [print([b.ButtonText.split("\n")[0] for b in r]) for r in rows]
     return rows
 
 if __name__ == "__main__":
@@ -51,13 +38,13 @@ if __name__ == "__main__":
     base_appliance.load_configuration()
     config = base_appliance.get_config()
     _midi_map = config["midi"]["map"]
+    gui_config = config["gui"]
 
     api = base_appliance.HueApi()
-    #base_appliance.do_the_hue(api) # TODO Reenable
+    base_appliance.do_the_hue(api) # TODO Reenable
+    midi_in = base_appliance.init(api) # TODO Reenable
     
-    layout = generate_button_map(4)
-    
-    #midi_in = base_appliance.init(api) # TODO Reenable
+    layout = generate_button_map(gui_config["buttons_per_row"])
     
     # Create the window
     window = sg.Window(
@@ -72,9 +59,8 @@ if __name__ == "__main__":
         event, values = window.read()
         # End program if user closes window or
         # presses the OK button
-        if type(event) is tuple and"button" == event[0]:
-            #print(event[1])
-            base_appliance.callback(([144,event[1],127], 0), "wat")
+        if type(event) is tuple and "button" == event[0]:
+            base_appliance.callback(([0b10010000, event[1], 0b01111111], 0), "wat")
         if event == sg.WIN_CLOSED:
             base_appliance.cleanup(midi_in)
             break

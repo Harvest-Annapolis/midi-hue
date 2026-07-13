@@ -25,16 +25,16 @@ def load_configuration():
         print("Loaded config.toml")
 
     # Get the path to the instructions file from the configured value
-    instructions_path = _config["instructions_path"]
+    instructions_path = _config["files"]["instructions_path"]
     with open(instructions_path, "rb") as instructions_toml:
         instructions_data = tomllib.load(instructions_toml)["instructions"]
         print(f"Loaded {instructions_path}")
     process_instructions(instructions_data)
 
-def process_instructions(instructions_data: dict) -> list[Instruction]:
+def process_instructions(instructions_data: dict) -> dict[int, Instruction]:
     """Parse data into appropriate data structures"""
     global _config, _instructions
-    inst_list = []
+    inst_dict = {}
     # Parse each instruction
     for instruction in instructions_data:
         actions = []
@@ -72,9 +72,13 @@ def process_instructions(instructions_data: dict) -> list[Instruction]:
             if "autotrack" in inst_camera:
                 camera_list.append(CameraAutotrackAction(inst_camera["autotrack"]))
             actions.extend(camera_list)
+        
         # Put all generated actions into an Instruction class
-        inst_list.append(Instruction(instruction["description"], instruction["midi"], actions))
-    _instructions = inst_list
+        # Check for preexisting midi entry with this number first; it will be overridden
+        if instruction["midi"] in inst_dict:
+            print(f"Error: Midi note {instruction["midi"]} already has an instruction defined! Duplicates not allowed and will be overwritten")
+        inst_dict[instruction["midi"]] = Instruction(instruction["description"], instruction["midi"], actions)
+    _instructions = inst_dict
     print("Parsed instructions list")
 
 def get_config() -> dict | None:
@@ -83,7 +87,7 @@ def get_config() -> dict | None:
         print("Error - config is not yet loaded! Please make sure load_configuration is run before get_config")
     return _config
 
-def get_instructions() -> list[Instruction] | None:
+def get_instructions() -> dict[int, Instruction] | None:
     global _instructions
     if _instructions is None:
         print("Error - instructions is not yet loaded and/or parsed! Please make sure load_configuration is run before get_instructions")
@@ -124,12 +128,17 @@ def perform_media_action(action: MediaAction):
             print(f"Unknown media action type: {action}")
 
 def perform_camera_action(action: CameraPresetAction | CameraAutotrackAction):
+    config = get_config()
+    camera_ip = config["ips"]["camera"]
+    camera_urls = config["camera"]
     match action:
         case CameraPresetAction():
-            requests.post("http://10.2.0.93/cgi-bin/ptzctrl.cgi?post_preset", data="poscallwithspeed={}&panspeed=10&tiltspeed=10&zoomspeed=5".format(action.preset))
+            requests.post(camera_urls["base_url"].format(camera_ip) + camera_urls["preset_url"],
+                          data = camera_urls["preset_data"].format(action.preset))
         case CameraAutotrackAction():
             onoff = 2 if action == CameraAutotrackAction.TRUE else 3
-            requests.get("http://10.2.0.93/cgi-bin/ptzctrl.cgi?post_image_value&autotrack&{}".format(onoff), data="")
+            requests.get(camera_urls["base_url"].format(camera_ip) + camera_urls["autotrack_url"].format(onoff),
+                         data = camera_urls["autotrack_data"])
         case _:
             print("How'd you get in here???")
             print("I mean uhhh")
@@ -140,12 +149,14 @@ def perform_camera_action(action: CameraPresetAction | CameraAutotrackAction):
 #
 
 def join_the_hue():
+    config = get_config()
     api = HueApi()
-    api.create_new_user("10.1.0.99")
-    api.save_api_key("the_hue_is_due.dat")
+    api.create_new_user(config["ips"]["hue_bridge"])
+    api.save_api_key(config["files"]["hue_api_key_path"])
 
 def do_the_hue(api):
-    api.load_existing("the_hue_is_due.dat")
+    config = get_config()
+    api.load_existing(config["files"]["hue_api_key_path"])
     api.fetch_lights()
     api.fetch_groups()
 
@@ -157,18 +168,20 @@ def callback(data, _):
         case MidiMessageType.NOTE_ON:
             if message.data_2 != 0: # If velocity is not 0:
                 instructions = get_instructions()
-                [run_instruction(i) for i in instructions if i.midi == message.data_1]
+                if message.data_1 in instructions:
+                    run_instruction(instructions[message.data_1])
         case _:
             pass
             # No other message types supported at present
 
-def init(api):
+def init(api: HueApi):
     global _hue_api
-    midi_in = rtmidi.MidiIn()
     _hue_api = api
+
+    midi_in = rtmidi.MidiIn()
     midi_in.set_callback(callback)
     print(midi_in.get_ports())
-    midi_in.open_port(1,name="Light Hub")
+    midi_in.open_port(1, name = "Light Hub") # TODO: Revisit this line
     return midi_in
 
 def cleanup(midi_in):
@@ -177,11 +190,9 @@ def cleanup(midi_in):
 
 if __name__ == "__main__":
     load_configuration()
-    [print(i) for i in get_instructions()]
 
     api = HueApi()
     do_the_hue(api)
-    
     midi_in = init(api)
             
     print("Entering main loop. Press Control-C to exit.")
@@ -190,7 +201,7 @@ if __name__ == "__main__":
         # everything else is handled via the input callback.
         while True:
             cmd=input("Run manual command>>>")
-            callback(([0b10010000,cmd,0b01111111], 0), "wat")
+            callback(([0b10010000, cmd, 0b01111111], 0), "wat")
     except KeyboardInterrupt:
         print('')
     finally:

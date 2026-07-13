@@ -25,20 +25,36 @@ class HueAction(InsAction):
         elif brightness > HueAction.MAX_BRIGHTNESS:
             brightness = HueAction.MAX_BRIGHTNESS
         return HueAction(group_name, brightness)
+    
+    def __str__(self) -> str:
+        return f"Lights: {self.group_name} ({int(self.brightness / HueAction.MAX_BRIGHTNESS * 100)}%)"
 
 class MediaAction(InsEnum):
     """Enum class for all media actions - currently just 'toggle'"""
     TOGGLE = 1
+
+    def __str__(self) -> str:
+        match self:
+            case MediaAction.TOGGLE:
+                return "Media: Play/Pause Audio"
+            case _:
+                return f"Unknown action: {self.name}"
 
 @dataclass
 class CameraPresetAction(InsAction):
     """Instruction Action class for setting a preset on the camera"""
     preset: int
 
+    def __str__(self) -> str:
+        return f"Camera Preset: {self.preset}"
+
 class CameraAutotrackAction(InsEnum):
     """Instruction Action class for setting the autotrack setting on the camera"""
     FALSE = False
     TRUE = True
+
+    def __str__(self) -> str:
+        return f"Camera Auto-Track: {"on" if self == CameraAutotrackAction.TRUE else "off"}"
 
 @dataclass
 class Instruction:
@@ -46,3 +62,6 @@ class Instruction:
     description: str
     midi: int
     actions: list[InsAction | InsEnum]
+
+    def action_strs(self) -> str:
+        return "\n".join([str(action) for action in self.actions])

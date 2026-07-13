@@ -1,5 +1,26 @@
-instructions_path = "instructions.toml"
+[camera]
+# All the urls and data values here provide format strings
+# What should be put in the format is specified in the comment
+base_url = "http://{}/cgi-bin/ptzctrl.cgi" # args: camera IP
 
+autotrack_url = "?post_image_value&autotrack&{}" # args: 2 for autotrack on, 3 for autotrack off
+autotrack_data = "" # args: none
+
+preset_url = "?post_preset" # args: none
+preset_data = "poscallwithspeed={}&panspeed=10&tiltspeed=10&zoomspeed=5" # args: only preset, for now. TODO: Could add more support for customization if desired
+
+[files]
+instructions_path = "instructions.toml"
+hue_api_key_path = "the_hue_is_due.dat"
+
+[gui]
+buttons_per_row = 4
+[gui.button_style]
+font_family = "" # don't care
+font_size = 10
+font_style = "bold"
+button_width = 30
+button_height = 8
 
 [hue_groups]
 # Named Phillips Hue groups
@@ -9,6 +30,10 @@ booth = "Production Booth"
 foyer = "Foyer"
 sanctuary = "Sanctuary"
 stage = "Stage"
+
+[ips]
+hue_bridge = "10.1.0.99"
+camera = "10.2.0.93"
 
 [midi]
 # Human-readable name for every midi note
