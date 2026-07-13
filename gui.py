@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-from midi_map import midi_map
 import base_appliance
 import PySimpleGUI as sg
 
 def format_instruction_string(instructions):
-    output = "Midi Note: {} ({})\n\n".format(midi_map[int(instructions[0]["midi_note"])] ,instructions[0]["midi_note"])
+    output = "Midi Note: {} ({})\n\n".format(_midi_map[int(instructions[0]["midi_note"])] ,instructions[0]["midi_note"])
     first = True
     for instruction in instructions:
         if not first:
@@ -31,28 +30,34 @@ def format_instruction_string(instructions):
                 output += "Unknown Camera Command"
     return output
 
-def generate_button_map(row_width):
+def generate_button_map(row_buttons: int):
     rows=[]
     instructions = base_appliance.get_instructions()
     notes = sorted(list(set([i["midi_note"] for i in instructions])),reverse=True)
-    for i in range(0, len(notes), row_width):
+    for i in range(0, len(notes), row_buttons):
         rows.append([
             sg.Button(
                 format_instruction_string([k for k in instructions if k["midi_note"] == j]), 
                 font=("",10,"bold"), 
                 size=(30,8),
                 key=("button", j)) 
-            for j in notes[i:i+row_width]])
+            for j in notes[i:i+row_buttons]])
     print(rows)
     return rows
 
-if __name__ == "__main__":   
+if __name__ == "__main__":
+    global _midi_map
+
+    base_appliance.load_configuration()
+    config = base_appliance.get_config()
+    _midi_map = config["midi"]["map"]
+
     api = base_appliance.HueApi()
-    base_appliance.do_the_hue(api)
+    #base_appliance.do_the_hue(api) # TODO Reenable
     
     layout = generate_button_map(4)
     
-    midi_in = base_appliance.init(api)
+    #midi_in = base_appliance.init(api) # TODO Reenable
     
     # Create the window
     window = sg.Window(
