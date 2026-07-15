@@ -106,7 +106,7 @@ def run_instruction(instruction: Instruction):
                 perform_media_action(action)
             case CameraPresetAction() |\
                  CameraAutotrackAction():
-                pass
+                perform_camera_action(action)
             case _:
                 print("Invalid Instruction Type!!!")
                 print(f"Object received: {action}")
@@ -122,7 +122,7 @@ def perform_hue_action(action: HueAction):
 
 def perform_media_action(action: MediaAction):
     match action.value:
-        case MediaAction.TOGGLE:
+        case MediaAction.TOGGLE.value:
             win32api.keybd_event(VK_MEDIA_PLAY_PAUSE, 0, KEYEVENTF_EXTENDEDKEY, 0)
         case _:
             print(f"Unknown media action type: {action}")
