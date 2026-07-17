@@ -106,7 +106,7 @@ def run_instruction(instruction: Instruction):
                 perform_media_action(action)
             case CameraPresetAction() |\
                  CameraAutotrackAction():
-                pass
+                perform_camera_action(action)
             case _:
                 print("Invalid Instruction Type!!!")
                 print(f"Object received: {action}")
@@ -121,7 +121,7 @@ def perform_hue_action(action: HueAction):
         [l.set_brightness(action.brightness) for l in group.lights] # TODO: See if we can swap the order of these
 
 def perform_media_action(action: MediaAction):
-    match action.value:
+    match action:
         case MediaAction.TOGGLE:
             win32api.keybd_event(VK_MEDIA_PLAY_PAUSE, 0, KEYEVENTF_EXTENDEDKEY, 0)
         case _:
