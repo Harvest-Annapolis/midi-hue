@@ -29,6 +29,7 @@ def load_configuration():
     with open(instructions_path, "rb") as instructions_toml:
         instructions_data = tomllib.load(instructions_toml)["instructions"]
         print(f"Loaded {instructions_path}")
+    
     process_instructions(instructions_data)
 
 def process_instructions(instructions_data: dict) -> dict[int, Instruction]:
@@ -44,10 +45,15 @@ def process_instructions(instructions_data: dict) -> dict[int, Instruction]:
             inst_lights = instruction["lights"]
             lights_list = []
             for toml_name, hue_name in _config["hue_groups"].items():
+                # Lights can either be inputted as brightness or bpercent (brightness percent). Handle either/or.
+                # If both are specified, use brightness as it can be more exact.
                 if toml_name in inst_lights:
-                    # TODO: Future possibility to support brightnesses. I built it into the data structure but don't feel like figuring out the parsing logic here
+                    if "brightness" in inst_lights[toml_name]:
+                        lights_list.append(HueAction(hue_name, inst_lights[toml_name]["brightness"]))
+                    else:
+                        flt_percent = float(inst_lights[toml_name]["bpercent"].replace("%", ""))
+                        lights_list.append(HueAction.from_percent(hue_name, flt_percent))
                     # TODO: Other properties could also be supported here like color or temperature, but are not implemented right now.
-                    lights_list.append(HueAction(hue_name, inst_lights[toml_name]["brightness"]))
             actions.extend(lights_list)
         # Misc
         if "misc" in instruction:

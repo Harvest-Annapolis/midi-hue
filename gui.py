@@ -41,8 +41,10 @@ if __name__ == "__main__":
     gui_config = config["gui"]
 
     api = base_appliance.HueApi()
-    base_appliance.do_the_hue(api) # TODO Reenable
-    midi_in = base_appliance.init(api) # TODO Reenable
+
+    # Disable these lines to launch without a hue API server or midi server present
+    base_appliance.do_the_hue(api)
+    midi_in = base_appliance.init(api)
     
     layout = generate_button_map(gui_config["buttons_per_row"])
     

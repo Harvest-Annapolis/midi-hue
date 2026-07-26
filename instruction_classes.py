@@ -18,7 +18,7 @@ class HueAction(InsAction):
     MAX_BRIGHTNESS: ClassVar[int] = 255
 
     @staticmethod
-    def from_percent(group_name: str, brightness_pct: int) -> HueAction:
+    def from_percent(group_name: str, brightness_pct: float) -> HueAction:
         brightness = int(HueAction.MAX_BRIGHTNESS * brightness_pct / 100)
         if brightness < 0:
             brightness = 0
