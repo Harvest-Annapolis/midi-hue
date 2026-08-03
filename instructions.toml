@@ -2,8 +2,12 @@
 # Each [[instructions]] entry needs a description and a midi
 # You can also specify any of the following:
 # [instructions.lights]
-# - What, if any, hue light groups to set brightness for
+# - What, if any, hue light groups to set brightness for, and what brightness to set
 #   (See config.toml -> hue_groups for a list of all groups - use the lowercase name)
+# - For a given group "group", you can set the brightness using either the "brightness" key or the "bpercent" key as follows:
+#   - group.brightness = x (0 <= x <= 255)
+#   - group.bpercent = "x%" (0.0 <= x <= 100.0), or
+#   - group.bpercent = x (0.0 <= x <= 100.0)
 # [instructions.misc]
 # - Currently, this only supports "media" as a key
 # [instructions.camera]
@@ -15,15 +19,15 @@
 description = "Eyeballs Off"
 midi = 82
 [instructions.lights]
-stage.brightness = 0
+stage.bpercent = "0%"
 
 [[instructions]]
 description = "Good Friday"
 midi = 81
 [instructions.lights]
-booth.brightness = 64
-sanctuary.brightness = 186
-stage.brightness = 0
+booth.bpercent = "25%"
+sanctuary.brightness = 186 # This is like 73%... Might just make it 75%
+stage.bpercent = "25%"
 
 [[instructions]]
 description = "TBD"
@@ -36,56 +40,56 @@ sanctuary.brightness = 25
 description = "Bright Test"
 midi = 79
 [instructions.lights]
-booth.brightness = 255
-sanctuary.brightness = 255
+booth.bpercent = "100%"
+sanctuary.bpercent = "100%"
 
 [[instructions]]
 description = "Comfy"
 midi = 78
 [instructions.lights]
-booth.brightness = 64
-sanctuary.brightness = 186
+booth.bpercent = "25%"
+sanctuary.brightness = 186 # This is like 73%... Might just make it 75%
 stage.brightness = 0
 
 [[instructions]]
 description = "Who knows"
 midi = 77
 [instructions.lights]
-booth.brightness = 128
-sanctuary.brightness = 255
-stage.brightness = 76
+booth.bpercent = "50%"
+sanctuary.bpercent = "100%"
+stage.brightness = 76 # this is like 29%
 
 [[instructions]]
 description = "Message"
 midi = 76
 [instructions.lights]
-booth.brightness = 64
-sanctuary.brightness = 255
-stage.brightness = 64
+booth.bpercent = "25%"
+sanctuary.bpercent = "100%"
+stage.bpercent = "25%"
 
 [[instructions]]
 description = "tbd"
 midi = 75
 [instructions.lights]
-booth.brightness = 0
-sanctuary.brightness = 128
-stage.brightness = 76
+booth.bpercent = "0%"
+sanctuary.bpercent = "50%"
+stage.brightness = 76 # this is like 29%
 
 [[instructions]]
 description = "Worship"
 midi = 74
 [instructions.lights]
-booth.brightness = 64
-foyer.brightness = 230
-sanctuary.brightness = 200
-stage.brightness = 64
+booth.bpercent = "25%"
+foyer.brightness = 230 # like 90%
+sanctuary.brightness = 200 # like 78%
+stage.bpercent = "25%"
 
 [[instructions]]
 description = "tbd"
 midi = 73
 [instructions.lights]
-booth.brightness = 0
-sanctuary.brightness = 0
+booth.bpercent = "0%"
+sanctuary.bpercent = "0%"
 
 [[instructions]]
 description = "Spotify Toggle"
