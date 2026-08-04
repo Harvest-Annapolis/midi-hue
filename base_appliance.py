@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-import time
+from datetime import datetime
 import tomllib
+import threading
 import rtmidi
 import requests
 from hue_api import HueApi
+import PySimpleGUI as sg
 from instruction_classes import *
 from midi import *
 import win32api
@@ -30,6 +32,33 @@ def load_configuration():
         instructions_data = tomllib.load(instructions_toml)["instructions"]
         print(f"Loaded {instructions_path}")
     process_instructions(instructions_data)
+    
+    # Get the path to the instructions file from the configured value
+    reminders_path = _config["files"]["reminders_path"]
+    with open(reminders_path, "rb") as reminders_toml:
+        reminders_data = tomllib.load(reminders_toml)["reminders"]
+        print(f"Loaded {reminders_path}")
+    process_reminders(reminders_data)
+
+def process_reminders(reminders_data: dict):
+    """Load reminders into hanging threads"""
+    now = datetime.now()
+    fmt = "%H:%M"
+    for reminder in reminders:
+        target_time = datetime.strptime(reminder.time, fmt).replace(year=now.year, month=now.month, day=now.day)
+        delay = (target_time - now).total_seconds()
+        t = threading.Timer(delay, reminder_popup, args=[reminder.text])
+        
+def reminder_popup(text: str):
+    """Pop up a reminder"""
+    number_of_screens=2
+    popup_duration=60
+    screen_w, screen_h = sg.Window.get_screen_size()
+    layout = [[sg.Text(text, font=("", 30))]]
+    window = sg.Window("Reminder", layout, finalize=True, keep_on_top=True)
+    win_w, win_h = window.size
+    window.move((screen_w // (2 + number_of_screens)) - (win_w // 2), 0)
+    window.read(close=True, timeout=popup_duration * 1000)
 
 def process_instructions(instructions_data: dict) -> dict[int, Instruction]:
     """Parse data into appropriate data structures"""

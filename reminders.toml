@@ -1,0 +1,6 @@
+# Insert reminders here
+# Each [[reminders]] entry needs a time and a text
+
+[[reminders]]
+time = "19:55"
+text = "Do the dishes"

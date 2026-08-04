@@ -11,6 +11,7 @@ preset_data = "poscallwithspeed={}&panspeed=10&tiltspeed=10&zoomspeed=5" # args:
 
 [files]
 instructions_path = "instructions.toml"
+reminders_path = "reminders.toml"
 hue_api_key_path = "the_hue_is_due.dat"
 
 [gui]
